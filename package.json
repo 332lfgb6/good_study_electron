@@ -1,21 +1,83 @@
 {
-  "name": "study_electron_create_react_app",
+  "name": "good_study_electron",
   "version": "0.1.0",
+  "description": "一个学习electron的项目+搭配create-react-app",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+  "main": "main.js",
+  "author": {
+    "name": "John",
+    "email": "john@163.com",
+    "url": "http://baidu.com"
+  },
+  "homepage": "./",
+  "build": {
+    "appId": "good_study_electron_id",
+    "productName": "学习electron",
+    "copyright": "Copyright © 2024 ${author}",
+    "extends": null,
+    "directories": {
+      "buildResources": "assets"
+    },
+    "extraMetadata": {
+      "main": "./build/main.bundle.js"
+    },
+    "files": [
+      "build/**/*",
+      "settings/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "artifactName": "${productName}-${version}-${arch}-mac.${ext}"
+    },
+    "dmg": {
+      "background": "assets/app-dmg.png",
+      "icon": "assets/mac.icns",
+      "iconSize": 100,
+      "contents": [
+        {
+          "type": "link",
+          "x": 380,
+          "y": 280,
+          "path": "/Applications"
+        },
+        {
+          "type": "file",
+          "x": 110,
+          "y": 280
+        }
+      ],
+      "window": {
+        "width": 500,
+        "height": 500
+      }
+    },
+    "win": {
+      "target": [
+        "msi",
+        "nsis"
+      ],
+      "icon": "win.ico",
+      "artifactName": "${productName}-${version}-${arch}-win.${ext}",
+      "publisherName": "Jade"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "perMachine": false
+    }
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set BROWSER=none&& set PORT=5000&& react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "concurrently \"npm start\" \"wait-on http://localhost:5000 && electron .\"",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "prepack": "npm run build && webpack",
+    "predist": "npm run build && webpack",
+    "postinstall": "electron-builder install-app-deps"
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +96,24 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "dependencies": {
+    "@electron/remote": "^2.1.2",
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "concurrently": "^8.2.2",
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3",
+    "electron-is-dev": "^2.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "wait-on": "^7.2.0",
+    "web-vitals": "^2.1.4",
+    "webpack-cli": "^5.1.4"
   }
 }
