@@ -76,17 +76,26 @@ function App() {
       >
         导入文件5
       </button>
-      <button
-        onClick={() => {
-          dialog.showMessageBoxSync({
-            type: "info",
-            title: "提示",
-            message: "注册成功",
-          });
-        }}
-      >
-        注册成功
-      </button>
+      <div>
+        <button
+          onClick={() => {
+            dialog.showMessageBoxSync({
+              type: "info",
+              title: "提示",
+              message: "注册成功",
+            });
+          }}
+        >
+          注册成功
+        </button>
+        <button
+          onClick={() => {
+            dialog.showErrorBox("提示", "注册失败");
+          }}
+        >
+          注册失败
+        </button>
+      </div>
       <button
         onContextMenu={() => {
           const menu = new Menu();

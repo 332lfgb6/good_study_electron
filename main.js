@@ -1,11 +1,46 @@
-const { app, BrowserWindow, Menu, shell, ipcMain } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  shell,
+  ipcMain,
+  dialog,
+} = require("electron");
 const { initialize, enable } = require("@electron/remote/main");
 const template = require("./src/utils/menu");
 const { join } = require("path");
 const ElectronStore = require("electron-store");
 const isDev = require("electron-is-dev");
+const { autoUpdater } = require("electron-updater");
 
 app.on("ready", () => {
+  autoUpdater.autoDownload = false;
+  autoUpdater.checkForUpdatesAndNotify();
+  autoUpdater.on("error", (e) => {
+    console.log("Error: ", e === null ? "unknown" : e.stack || e.message);
+  });
+  autoUpdater.on("update-available", () => {
+    dialog.showMessageBoxSync(
+      {
+        type: "info",
+        title: "检查更新",
+        message: "发现新版本，是否立即更新？",
+        buttons: ["是", "否"],
+      },
+      (btnI) => {
+        if (btnI === 0) {
+          autoUpdater.downloadUpdate();
+        }
+      }
+    );
+  });
+  autoUpdater.on("update-not-available", () => {
+    dialog.showMessageBoxSync({
+      title: "检查更新",
+      message: "当前已是最先版本",
+    });
+  });
+
   let win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -17,7 +52,9 @@ app.on("ready", () => {
     },
   });
   win.loadURL(
-    isDev ? "http://localhost:5000" : `file://${join(__dirname, "./index.html")}`
+    isDev
+      ? "http://localhost:5000"
+      : `file://${join(__dirname, "./index.html")}`
   );
 
   enable(win.webContents);
