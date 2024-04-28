@@ -78,7 +78,7 @@
     "dev": "concurrently \"npm start\" \"wait-on http://localhost:5000 && electron .\"",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "release": "cross-env GH_TOKEN=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 electron-builder",
+    "release": "cross-env GH_TOKEN=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 electron-builder",
     "prepack": "npm run build && webpack",
     "predist": "npm run build && webpack",
     "prerelease": "npm run build && webpack",
